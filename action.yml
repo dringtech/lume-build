@@ -1,10 +1,10 @@
 name: 'Lume Build'
 description: 'Build a site using the Lume static site generator'
-# inputs:
-#   who-to-greet:  # id of input
-#     description: 'Who to greet'
-#     required: true
-#     default: 'World'
+inputs:
+  site-build-dir:
+    description: Directory to build the site into
+    required: false
+    default: '_site'
 # outputs:
 #   random-number:
 #     description: "Random number"
@@ -18,7 +18,7 @@ runs:
           deno-version: v1.x
       - shell: bash
         run: |
-          echo "import 'lume/cli.ts'" | deno run --unstable -A - --dest _site
+          echo "import 'lume/cli.ts'" | deno run --unstable -A - --dest ${{ inputs.site-build-dir }}
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: _site
+          path: ${{ inputs.site-build-dir }}
