@@ -1,6 +1,10 @@
 name: 'Lume Build'
 description: 'Build a site using the Lume static site generator'
 inputs:
+  bundle-for-pages:
+    description: Should the action create a pages artefact
+    required: false
+    default: true
   site-build-dir:
     description: Directory to build the site into
     required: false
@@ -20,5 +24,6 @@ runs:
         run: |
           echo "import 'lume/cli.ts'" | deno run --unstable -A - --dest ${{ inputs.site-build-dir }}
       - uses: actions/upload-pages-artifact@v1
+        if: ${{ inputs.bundle-for-pages }}
         with:
           path: ${{ inputs.site-build-dir }}
