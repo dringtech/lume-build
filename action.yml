@@ -5,6 +5,10 @@ inputs:
     description: Should the action create a pages artefact
     required: false
     default: true
+  site-build-cmd:
+    description: Command to build the site
+    required: false
+    default: echo "import 'lume/cli.ts'" | deno run --unstable -A -
   site-build-dir:
     description: Directory to build the site into
     required: false
@@ -22,7 +26,7 @@ runs:
           deno-version: v1.x
       - shell: bash
         run: |
-          echo "import 'lume/cli.ts'" | deno run --unstable -A - --dest ${{ inputs.site-build-dir }}
+          ${{ inputs.site-build-cmd }} --dest ${{ inputs.site-build-dir }}
       - uses: actions/upload-pages-artifact@v1
         if: ${{ inputs.bundle-for-pages }}
         with:
