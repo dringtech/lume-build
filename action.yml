@@ -1,0 +1,33 @@
+name: 'Lume Build'
+description: 'Build a site using the Lume static site generator'
+inputs:
+  bundle-for-pages:
+    description: Should the action create a pages artefact
+    required: false
+    default: true
+  site-build-cmd:
+    description: Command to build the site
+    required: false
+    default: echo "import 'lume/cli.ts'" | deno run --unstable -A -
+  site-build-dir:
+    description: Directory to build the site into
+    required: false
+    default: '_site'
+# outputs:
+#   random-number:
+#     description: "Random number"
+#     value: ${{ steps.random-number-generator.outputs.random-number }}
+runs:
+  using: "composite"
+  steps:
+      - uses: actions/checkout@v3
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+      - shell: bash
+        run: |
+          ${{ inputs.site-build-cmd }} --dest ${{ inputs.site-build-dir }}
+      - uses: actions/upload-pages-artifact@v1
+        if: ${{ inputs.bundle-for-pages }}
+        with:
+          path: ${{ inputs.site-build-dir }}
