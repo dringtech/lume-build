@@ -13,14 +13,10 @@ inputs:
     description: Directory to build the site into
     required: false
     default: '_site'
-# outputs:
-#   random-number:
-#     description: "Random number"
-#     value: ${{ steps.random-number-generator.outputs.random-number }}
 runs:
   using: "composite"
   steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - uses: denoland/setup-deno@v1
@@ -29,7 +25,7 @@ runs:
       - shell: bash
         run: |
           ${{ inputs.site-build-cmd }} --dest ${{ inputs.site-build-dir }}
-      - uses: actions/upload-pages-artifact@v1
+      - uses: actions/upload-pages-artifact@v3
         if: ${{ inputs.bundle-for-pages }}
         with:
           path: ${{ inputs.site-build-dir }}
