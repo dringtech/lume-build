@@ -13,6 +13,10 @@ inputs:
     description: Directory to build the site into
     required: false
     default: '_site'
+  deno-version:
+    description: Version of deno
+    required: false
+    default: v1.x
 runs:
   using: "composite"
   steps:
@@ -21,7 +25,7 @@ runs:
           fetch-depth: 0
       - uses: denoland/setup-deno@v1
         with:
-          deno-version: v1.x
+          deno-version: ${{ inputs.deno-version }}
       - shell: bash
         run: |
           ${{ inputs.site-build-cmd }} --dest ${{ inputs.site-build-dir }}
