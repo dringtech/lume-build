@@ -16,14 +16,14 @@ inputs:
   deno-version:
     description: Version of deno
     required: false
-    default: v1.x
+    default: v2.x
 runs:
   using: "composite"
   steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - uses: denoland/setup-deno@v1
+      - uses: denoland/setup-deno@v2
         with:
           deno-version: ${{ inputs.deno-version }}
       - shell: bash
