@@ -17,6 +17,11 @@ inputs:
     description: Version of deno
     required: false
     default: v2.x
+  deno-lockfile:
+    description: Path to deno lockfile
+    required: false
+    default: ./deno.lock
+
 runs:
   using: "composite"
   steps:
@@ -26,6 +31,14 @@ runs:
       - uses: denoland/setup-deno@v2
         with:
           deno-version: ${{ inputs.deno-version }}
+      - shell: bash
+        run: |
+          echo "DENO_DIR=$RUNNER_TEMP${{ runner.os == 'Windows' && '\\' || '/'  }}deno_cache" >> $GITHUB_ENV
+      - id: cache-deno
+        uses: actions/cache@v4
+        with:
+          key: lume-build-deno-cache-${{ runner.os }}-${{ hashFiles(inputs.deno-lockfile) }}
+          path: ${{ env.DENO_DIR }}
       - shell: bash
         run: |
           ${{ inputs.site-build-cmd }} --dest ${{ inputs.site-build-dir }}
