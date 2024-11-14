@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Build the site
-        uses: dringtech/lume-build@v2
+        uses: dringtech/lume-build@v3
 
   # Deploy job
   deploy:
